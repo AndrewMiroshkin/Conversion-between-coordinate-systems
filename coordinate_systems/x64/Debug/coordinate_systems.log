@@ -1,18 +1,2 @@
 ﻿  coordinate_systems.cpp
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(18,19): error C3646: polarToCartesian: неизвестный спецификатор переопределения
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(18,36): error C2059: синтаксическая ошибка: const
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(18,49): error C2238: непредвиденные лексемы перед ";"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(21,47): error C4430: отсутствует спецификатор типа - предполагается int. Примечание. C++ не поддерживает int по умолчанию
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(21,47): error C2143: синтаксическая ошибка: отсутствие "," перед "&"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(54,24): error C2248: Polar::r: невозможно обратиться к private член, объявленному в классе "Polar"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(11,9): message : см. объявление "Polar::r"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(9,7): message : см. объявление "Polar"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(54,38): error C2248: Polar::theta: невозможно обратиться к private член, объявленному в классе "Polar"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(12,9): message : см. объявление "Polar::theta"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(9,7): message : см. объявление "Polar"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(54,52): error C2248: Polar::r: невозможно обратиться к private член, объявленному в классе "Polar"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(11,9): message : см. объявление "Polar::r"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(9,7): message : см. объявление "Polar"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(54,66): error C2248: Polar::theta: невозможно обратиться к private член, объявленному в классе "Polar"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(12,9): message : см. объявление "Polar::theta"
-D:\Studies\Юника\Кординатные системы\coordinate_systems\coordinate_systems\coordinate_systems.cpp(9,7): message : см. объявление "Polar"
+  coordinate_systems.vcxproj -> D:\Studies\Юника\Кординатные системы\coordinate_systems\x64\Debug\coordinate_systems.exe
