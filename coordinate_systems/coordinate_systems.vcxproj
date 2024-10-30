@@ -133,8 +133,10 @@
     <ClCompile Include="Spherical.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cartesian.h" />
     <ClInclude Include="Cmake.h" />
-    <ClInclude Include="Libraries.h" />
+    <ClInclude Include="Polar.h" />
+    <ClInclude Include="Spherical.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

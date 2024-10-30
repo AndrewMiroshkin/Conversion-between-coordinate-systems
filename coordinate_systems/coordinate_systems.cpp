@@ -1,146 +1,23 @@
 ﻿#include <iostream>
 #include <cmath>
 #include <vector>
-#include "Timer.h"
+#include <windows.h>
 
+#include "Timer.h"
+#include "Cmake.h"
+
+static HANDLE hOUTPUT = GetStdHandle(STD_OUTPUT_HANDLE);
+#define White SetConsoleTextAttribute(hOUTPUT, 0x000f);
+#define Green SetConsoleTextAttribute(hOUTPUT, 0x000a);
+#define Red SetConsoleTextAttribute(hOUTPUT, 0x000c);
+#define Cyan SetConsoleTextAttribute(hOUTPUT, 0x0003);
 #define PI 3.14159265358979323846
 
-class Cartesian; 
-class Spherical;
-class Polar;
-
-class Polar {
-private:
-	double r; 
-	double theta;
-
-public:
-	Polar(double radius, double angle) : r(radius), theta(angle) {}
-
-	friend Cartesian polarToCartesian(const Polar&);
-
-	friend Polar cartesianToPolar(const Cartesian&);
-
-	friend double polarDistance(const Polar&, const Polar&);
-
-	bool isEqual(const Polar& other) const {
-		return (fabs(r - other.r) < 1e-6) && (fabs(theta - other.theta) < 1e-6);
-	}
-
-	void print() {
-		std::cout << "Полярна система координат: (r: " << r << ", theta: " << theta << ")\n";
-	}
-};
-
-class Spherical {
-private:
-	double r; 
-	double theta; 
-	double phi; 
-
-public:
-	Spherical(double radius, double azimuth, double polar) : r(radius), theta(azimuth), phi(polar) {}
-
-	friend Cartesian sphericalToCartesian(const Spherical&);
-
-	friend Spherical cartesianToSpherical(const Cartesian&);
-
-	friend double throughSphereDistance(const Spherical&, Spherical&);
-
-	friend double greatCircleDistance(const Spherical&, const Spherical&);
-
-	bool isEqual(const Spherical& other) const {
-		return (fabs(r - other.r) < 1e-6) && (fabs(theta - other.theta) < 1e-6) && (fabs(phi - other.phi) < 1e-6);
-	}
-
-	void print() {
-		std::cout << "Сферична система координат: (r: " << r << ", theta: " << theta << ", phi: " << phi << ")\n";
-	}
-};
-
-class Cartesian {
-private:
-	double x;
-	double y;
-	double z;
-
-public:
-	Cartesian() : x(0), y(0), z(0) {}
-
-	Cartesian(double x, double y) : x(x), y(y), z(0) {}
-
-	Cartesian(double x, double y, double z) : x(x), y(y), z(z) {}
-
-	friend Cartesian polarToCartesian(const Polar&);
-
-	friend Polar cartesianToPolar(const Cartesian&);
-
-	friend Cartesian sphericalToCartesian(const Spherical&);
-
-	friend Spherical cartesianToSpherical(const Cartesian&);
-
-	friend double cartesianDistance2D(const Cartesian&, const Cartesian&);
-
-	friend double cartesianDistance3D(const Cartesian&, const Cartesian&);
-
-	void print2D() {
-		std::cout << "Декартова система координат: (x: " << x << ", y: " << y << ")\n";
-	}
-
-	void print3D() {
-		std::cout << "Декартова система координат: (x: " << x << ", y: " << y << ", z: " << z << ")\n";
-	}
-};
-
-Cartesian polarToCartesian(const Polar& polar) {
-	return Cartesian(polar.r * cos(polar.theta), polar.r * sin(polar.theta));
-}
-
-Polar cartesianToPolar(const Cartesian& cartesian) {
-	return Polar(sqrt(pow(cartesian.x, 2) + pow(cartesian.y, 2)), atan2(cartesian.y, cartesian.x));
-}
-
-Cartesian sphericalToCartesian(const Spherical& spherical) {
-	return Cartesian(
-		spherical.r * sin(spherical.phi) * cos(spherical.theta),
-		spherical.r * sin(spherical.phi) * sin(spherical.theta),
-		spherical.r * cos(spherical.phi)
-	);
-}
-
-Spherical cartesianToSpherical(const Cartesian& cartesian) {
-	double r = sqrt(pow(cartesian.x, 2) + pow(cartesian.y, 2) + pow(cartesian.z, 2));
-	return Spherical(r, atan2(cartesian.y, cartesian.x), acos(cartesian.z / r));
-}
-
-double cartesianDistance2D(const Cartesian& fPoint, const Cartesian& sPoint) {
-	return sqrt(pow((fPoint.x - sPoint.x), 2) + pow((fPoint.y - sPoint.y), 2));
-}
-
-double cartesianDistance3D(const Cartesian& fPoint, const Cartesian& sPoint) {
-	return sqrt(pow((fPoint.x - sPoint.x), 2) + pow((fPoint.y - sPoint.y), 2) + pow((fPoint.z - sPoint.z), 2));
-}
-
-double polarDistance(const Polar& fPoint, const Polar& sPoint) {
-	return sqrt(pow(fPoint.r, 2) + pow(sPoint.r, 2) - 2 * fPoint.r * sPoint.r * cos(sPoint.theta - fPoint.theta));
-}
-
-double throughSphereDistance(const Spherical& fPoint, Spherical& sPoint) {
-	return sqrt(pow(fPoint.r, 2) + pow(sPoint.r, 2) - 2 * fPoint.r * sPoint.r * 
-		(sin(fPoint.theta) * sin(sPoint.theta) * cos(fPoint.phi - sPoint.phi) + cos(fPoint.theta) * cos(sPoint.theta)));
-}
-
-double greatCircleDistance(const Spherical& fPoint, const Spherical& sPoint) {
-	return fPoint.r * acos(sin(fPoint.phi) * sin(sPoint.phi) + cos(fPoint.phi) * cos(sPoint.phi) * cos(fPoint.theta - sPoint.theta));
-}
-
-int main() {
-	setlocale(LC_ALL, "ru");
-	system("chcp 1251");
-	system("cls");
-
+// Перехід між системами координат
+void task1() {
 	bool correct = true;
-	// Двовимірний простір: Декартова та полярна системи координат
+
+	// Двовимірний простір: Декартова та полярна системи координат 
 	{
 		std::vector<Cartesian> cartesianPoints2D;
 		std::vector<Polar> convertedPolarPoints;
@@ -171,8 +48,8 @@ int main() {
 			}
 		}
 
-		if (correct) std::cout << "Перетворення виконані коректно.\n\n";
-		else std::cout << "Помилка в перетвореннях.\n\n";
+		if (correct) { Green std::cout << "Перетворення виконані коректно.\n\n"; White	}
+		else { Red std::cout << "Помилка в перетвореннях.\n\n"; White }
 	}
 
 	// Тривимірний простір: Декартова та сферична системи координат
@@ -205,9 +82,110 @@ int main() {
 				break;
 			}
 		}
-		if (correct) std::cout << "Перетворення виконані коректно.\n";
-		else std::cout << "Помилка в перетвореннях.\n";
+		if (correct) { Green std::cout << "Перетворення виконані коректно.\n\n"; White }
+		else { Red std::cout << "Помилка в перетвореннях.\n\n"; White }
 	}
+}
+
+// Розрахунок відстаней у сферичній системі координат:
+void task2() {
+	std::vector<Cartesian> cartesianPoints = {
+		{8, 12},
+		{7, 11},
+		{3, -6, 8},
+		{-1, 5, -15}
+	};
+	std::cout << "Двовимірний простір - відстань між двома точками у декартовій системі координат: " << cartesianDistance2D(cartesianPoints[0], cartesianPoints[1]) << '\n' 
+		<< "Тривимірний простір - відстань між двома точками у декартовій системі координат: " << cartesianDistance3D(cartesianPoints[2], cartesianPoints[3]) << "\n\n";
 	
+	std::vector<Polar> polarPoints = {
+		{5, PI / 6},
+		{8, PI / 3}
+	};
+	std::cout << "Пряма відстань між двома точками у полярній системі координат: " << polarDistance(polarPoints[0], polarPoints[1]) << "\n\n";
+
+	std::vector<Spherical> sphericalPoints = {
+		{5, PI / 6, PI / 4},
+		{3, PI / 4, PI / 3},
+	};
+	std::cout << "Пряма відстань між двома точками у сферичній системі координат (через об'єм сфери): " << throughSphereDistance(sphericalPoints[0], sphericalPoints[1]) << '\n'
+		<< "Дугова відстань між двома точками на поверхні сфери (велика колова відстань): " << greatCircleDistance(sphericalPoints[0], sphericalPoints[1]) << "\n\n";
+}
+
+// Бенчмарки продуктивності:
+void task3() {
+	std::vector<Cartesian> cartesianPoints;
+	std::vector<Polar> polarPoints;
+	std::vector<Spherical> sphericalPoints;
+
+
+	for (int i = 0; i < 100000; ++i)
+		cartesianPoints.push_back({ (double)(rand() % 100), (double)(rand() % 100), (double)(rand() % 100) });
+
+	for (int i = 0; i < 100000; ++i)
+		polarPoints.push_back({ (double)(rand() % 100), (double)(rand() % 100) });
+
+	for (int i = 0; i < 100000; ++i)
+		sphericalPoints.push_back({ (double)(rand() % 100), (double)(rand() % 100), (double)(rand() % 100) });
+
+	{
+		std::cout << "Відстань між двома точками у декартовій системі координат 2D\n";
+		Timer t;
+		for (int i = 0; i < 100000; i += 2)
+			cartesianDistance2D(cartesianPoints[i], cartesianPoints[i + 1]);
+	}
+	std::cout << '\n';
+
+	{
+		std::cout << "Відстань між двома точками у декартовій системі координат 3D\n";
+		Timer t;
+		for (int i = 0; i < 100000; i += 2)
+			cartesianDistance3D(cartesianPoints[i], cartesianPoints[i + 1]);
+	}
+	std::cout << '\n';
+
+	{
+		std::cout << "Відстань між двома точками у полярній системі координат\n";
+		Timer t;
+		for (int i = 0; i < 100000; i += 2)
+			polarDistance(polarPoints[i], polarPoints[i + 1]);
+	}
+	std::cout << '\n';
+
+	{
+		std::cout << "Відстань між двома точками у сферичній системі координат (через об'єм сфери)\n";
+		Timer t;
+		for (int i = 0; i < 100000; i += 2)
+			throughSphereDistance(sphericalPoints[i], sphericalPoints[i + 1]);
+	}
+	std::cout << '\n';
+
+	{
+		std::cout << "Відстань між двома точками на поверхні сфери (велика колова відстань)\n";
+		Timer t;
+		for (int i = 0; i < 100000; i += 2)
+			greatCircleDistance(sphericalPoints[i], sphericalPoints[i + 1]);
+	}
+}
+
+int main() {
+	setlocale(LC_ALL, "ru");
+	system("chcp 1251");
+	system("cls");	
+
+	Cyan printf("---------------------------------------------------------------------------------\n\n"); White
+
+	task1();
+
+	Cyan printf("---------------------------------------------------------------------------------\n\n"); White
+
+	task2();
+
+	Cyan printf("---------------------------------------------------------------------------------\n\n"); White
+
+	task3();
+
+	Cyan printf("\n---------------------------------------------------------------------------------\n\n"); White
+
 	return 0;
 }

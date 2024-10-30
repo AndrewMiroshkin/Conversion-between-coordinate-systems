@@ -1,36 +1,27 @@
-#include "Libraries.h"
 #include "Cmake.h"
 
-class Cartesian {
-private:
-	double x;
-	double y;
-	double z;
+Cartesian::Cartesian() : x(0), y(0), z(0) {}
 
-public:
-	Cartesian() : x(0), y(0), z(0) {}
+Cartesian::Cartesian(double x, double y) : x(x), y(y), z(0) {}
 
-	Cartesian(double x, double y) : x(x), y(y), z(0) {}
+Cartesian::Cartesian(double x, double y, double z) : x(x), y(y), z(z) {}
 
-	Cartesian(double x, double y, double z) : x(x), y(y), z(z) {}
+double cartesianDistance2D(const Cartesian& fPoint, const Cartesian& sPoint) {
+    return sqrt(pow((sPoint.x - fPoint.x), 2) + pow((sPoint.y - fPoint.y), 2));
+}
 
-	friend Cartesian polarToCartesian(const Polar&);
+double cartesianDistance3D(const Cartesian& fPoint, const Cartesian& sPoint) {
+    return sqrt(pow((sPoint.x - fPoint.x), 2) + pow((sPoint.y - fPoint.y), 2) + pow((sPoint.z - fPoint.z), 2));
+}
 
-	friend Polar cartesianToPolar(const Cartesian&);
+bool Cartesian::isEqual(const Cartesian& other) const {
+    return (fabs(x - other.x) < 1e-6) && (fabs(y - other.y) < 1e-6) && (fabs(z - other.z) < 1e-6);
+}
 
-	friend Cartesian sphericalToCartesian(const Spherical&);
+void Cartesian::print2D() const {
+    std::cout << "Декартова система координат: (x: " << x << ", y: " << y << ")\n";
+}
 
-	friend Spherical cartesianToSpherical(const Cartesian&);
-
-	friend double cartesianDistance2D(const Cartesian&, const Cartesian&);
-
-	friend double cartesianDistance3D(const Cartesian&, const Cartesian&);
-
-	void print2D() {
-		std::cout << "Декартова система координат: (x: " << x << ", y: " << y << ")\n";
-	}
-
-	void print3D() {
-		std::cout << "Декартова система координат: (x: " << x << ", y: " << y << ", z: " << z << ")\n";
-	}
-};
+void Cartesian::print3D() const {
+    std::cout << "Декартова система координат: (x: " << x << ", y: " << y << ", z: " << z << ")\n";
+}

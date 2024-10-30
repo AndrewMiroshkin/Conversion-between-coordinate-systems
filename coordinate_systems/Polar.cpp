@@ -1,26 +1,24 @@
-#include "Libraries.h"
-#include "Cmake.h"
+#include "Polar.h"
+#include "Cartesian.h"
 
-class Polar {
-private:
-	double r;
-	double theta;
+Polar::Polar(double radius, double angle) : r(radius), theta(angle) {}
 
-public:
-	Polar(double radius, double angle) : r(radius), theta(angle) {}
+Cartesian polarToCartesian(const Polar& polar) {
+    return Cartesian(polar.r * cos(polar.theta), polar.r * sin(polar.theta));
+}
 
-	friend Cartesian polarToCartesian(const Polar&);
+Polar cartesianToPolar(const Cartesian& cartesian) {
+    return Polar(sqrt(pow(cartesian.x, 2) + pow(cartesian.y, 2)), atan2(cartesian.y, cartesian.x));
+}
 
-	friend Polar cartesianToPolar(const Cartesian&);
+double polarDistance(const Polar& fPoint, const Polar& sPoint) {
+    return sqrt(pow(fPoint.r, 2) + pow(sPoint.r, 2) - 2 * fPoint.r * sPoint.r * cos(sPoint.theta - fPoint.theta));
+}
 
-	friend double polarDistance(const Polar&, const Polar&);
+bool Polar::isEqual(const Polar& other) const {
+    return (fabs(r - other.r) < 1e-6) && (fabs(theta - other.theta) < 1e-6);
+}
 
-	bool isEqual(const Polar& other) const {
-		return (fabs(r - other.r) < 1e-6) && (fabs(theta - other.theta) < 1e-6);
-	}
-
-	void print() {
-		std::cout << "Полярна система координат: (r: " << r << ", theta: " << theta << ")\n";
-	}
-};
-
+void Polar::print() const {
+    std::cout << "Полярна система координат: (r: " << r << ", theta: " << theta << ")\n";
+}

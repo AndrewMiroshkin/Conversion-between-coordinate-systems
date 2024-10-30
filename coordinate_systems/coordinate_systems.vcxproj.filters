@@ -32,10 +32,16 @@
     <ClInclude Include="Timer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries.h">
+    <ClInclude Include="Cmake.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Cmake.h">
+    <ClInclude Include="Polar.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Spherical.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Cartesian.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

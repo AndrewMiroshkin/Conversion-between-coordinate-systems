@@ -1,8 +1,4 @@
-#ifndef CMAKE_H
-#define CMAKE_H
-
-class Cartesian;
-class Spherical;
-class Polar;
-
-#endif
+#pragma once
+#include "Cartesian.h"
+#include "Polar.h"
+#include "Spherical.h"
