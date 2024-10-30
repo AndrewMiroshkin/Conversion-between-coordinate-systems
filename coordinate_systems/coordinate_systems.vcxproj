@@ -127,7 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cartesian.cpp" />
     <ClCompile Include="coordinate_systems.cpp" />
+    <ClCompile Include="Polar.cpp" />
+    <ClCompile Include="Spherical.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cmake.h" />
+    <ClInclude Include="Libraries.h" />
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

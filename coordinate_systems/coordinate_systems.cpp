@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <cmath>
 #include <vector>
+#include "Timer.h"
 
 #define PI 3.14159265358979323846
 
@@ -19,6 +20,8 @@ public:
 	friend Cartesian polarToCartesian(const Polar&);
 
 	friend Polar cartesianToPolar(const Cartesian&);
+
+	friend double polarDistance(const Polar&, const Polar&);
 
 	bool isEqual(const Polar& other) const {
 		return (fabs(r - other.r) < 1e-6) && (fabs(theta - other.theta) < 1e-6);
@@ -41,6 +44,10 @@ public:
 	friend Cartesian sphericalToCartesian(const Spherical&);
 
 	friend Spherical cartesianToSpherical(const Cartesian&);
+
+	friend double throughSphereDistance(const Spherical&, Spherical&);
+
+	friend double greatCircleDistance(const Spherical&, const Spherical&);
 
 	bool isEqual(const Spherical& other) const {
 		return (fabs(r - other.r) < 1e-6) && (fabs(theta - other.theta) < 1e-6) && (fabs(phi - other.phi) < 1e-6);
@@ -72,6 +79,10 @@ public:
 
 	friend Spherical cartesianToSpherical(const Cartesian&);
 
+	friend double cartesianDistance2D(const Cartesian&, const Cartesian&);
+
+	friend double cartesianDistance3D(const Cartesian&, const Cartesian&);
+
 	void print2D() {
 		std::cout << "Декартова система координат: (x: " << x << ", y: " << y << ")\n";
 	}
@@ -102,32 +113,44 @@ Spherical cartesianToSpherical(const Cartesian& cartesian) {
 	return Spherical(r, atan2(cartesian.y, cartesian.x), acos(cartesian.z / r));
 }
 
+double cartesianDistance2D(const Cartesian& fPoint, const Cartesian& sPoint) {
+	return sqrt(pow((fPoint.x - sPoint.x), 2) + pow((fPoint.y - sPoint.y), 2));
+}
+
+double cartesianDistance3D(const Cartesian& fPoint, const Cartesian& sPoint) {
+	return sqrt(pow((fPoint.x - sPoint.x), 2) + pow((fPoint.y - sPoint.y), 2) + pow((fPoint.z - sPoint.z), 2));
+}
+
+double polarDistance(const Polar& fPoint, const Polar& sPoint) {
+	return sqrt(pow(fPoint.r, 2) + pow(sPoint.r, 2) - 2 * fPoint.r * sPoint.r * cos(sPoint.theta - fPoint.theta));
+}
+
+double throughSphereDistance(const Spherical& fPoint, Spherical& sPoint) {
+	return sqrt(pow(fPoint.r, 2) + pow(sPoint.r, 2) - 2 * fPoint.r * sPoint.r * 
+		(sin(fPoint.theta) * sin(sPoint.theta) * cos(fPoint.phi - sPoint.phi) + cos(fPoint.theta) * cos(sPoint.theta)));
+}
+
+double greatCircleDistance(const Spherical& fPoint, const Spherical& sPoint) {
+	return fPoint.r * acos(sin(fPoint.phi) * sin(sPoint.phi) + cos(fPoint.phi) * cos(sPoint.phi) * cos(fPoint.theta - sPoint.theta));
+}
+
 int main() {
 	setlocale(LC_ALL, "ru");
 	system("chcp 1251");
 	system("cls");
 
 	bool correct = true;
-	std::vector<Cartesian> cartesianPoints2D; 
-	std::vector<Polar> convertedPolarPoints;
-	std::vector<Polar> polarPoints = {
-		{0, 0},
-		{5, PI / 6},
-		{3, PI / 4},
-		{8, PI / 3}
-	}; 
-
-	std::vector<Cartesian> cartesianPoints3D;
-	std::vector<Spherical> convertedSphericalPoints;
-	std::vector<Spherical> sphericalPoints = {
-		{1, 1, 1},
-		{5, PI / 6, PI / 4},
-		{3, PI / 4, PI / 3},
-		{8, PI / 3, PI / 6}
-	};
-	
 	// Двовимірний простір: Декартова та полярна системи координат
 	{
+		std::vector<Cartesian> cartesianPoints2D;
+		std::vector<Polar> convertedPolarPoints;
+		std::vector<Polar> polarPoints = {
+			{0, 0},
+			{5, PI / 6},
+			{3, PI / 4},
+			{8, PI / 3}
+		};
+
 		for (const auto& polar : polarPoints) {
 			cartesianPoints2D.push_back(polarToCartesian(polar));
 		}
@@ -154,6 +177,15 @@ int main() {
 
 	// Тривимірний простір: Декартова та сферична системи координат
 	{
+		std::vector<Cartesian> cartesianPoints3D;
+		std::vector<Spherical> convertedSphericalPoints;
+		std::vector<Spherical> sphericalPoints = {
+			{1, 1, 1},
+			{5, PI / 6, PI / 4},
+			{3, PI / 4, PI / 3},
+			{8, PI / 3, PI / 6}
+		};
+
 		for (const auto& spherical : sphericalPoints) {
 			cartesianPoints3D.push_back(sphericalToCartesian(spherical));
 		}
@@ -173,10 +205,9 @@ int main() {
 				break;
 			}
 		}
-
 		if (correct) std::cout << "Перетворення виконані коректно.\n";
 		else std::cout << "Помилка в перетвореннях.\n";
 	}
-
+	
 	return 0;
 }
