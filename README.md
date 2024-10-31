@@ -47,7 +47,7 @@ bool Spherical::isEqual(const Spherical& other) const {
 ```
 
 Результат перевірки:
- ![[t1_results.jpg]]
+![t1_results](t1_results.jpg)
 
 ## Результати бенчмаркінгу
 
@@ -62,7 +62,7 @@ bool Spherical::isEqual(const Spherical& other) const {
 |           0,0054189            |           0,0071237            |         0,0046655         |     0,0071759     |       0,0053204        |
 
 <center> <b>Діаграма середніх значень часу роботи (в секундах) </b></center>
-![[t3_diagram.jpg]]
+ ![t3_diagram](./screenshots/t3_diagram.jpg)
 
 ## Висновки
 
